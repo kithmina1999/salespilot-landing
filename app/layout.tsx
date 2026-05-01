@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://salespilot.lk"),
@@ -28,7 +29,9 @@ export default function RootLayout({
       className="h-full antialiased light"
     >
       <body className="min-h-full flex flex-col bg-white text-foreground">
-        {children}
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );
