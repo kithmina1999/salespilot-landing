@@ -17,6 +17,7 @@ import Navbar from "@/components/Navbar";
 import { icons, landingContent, type Locale } from "@/lib/landing-content";
 import { resources } from "@/lib/resources";
 import { appUrl } from "@/lib/site";
+import { StickyFooter } from "@/components/sticky-footer";
 
 function SectionHeader({
   eyebrow,
@@ -329,27 +330,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer />
+      <StickyFooter />
     </main>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="border-t border-slate-200 px-5 py-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-lg font-black text-slate-950">SalesPilot</p>
-          <p className="mt-1 text-sm text-slate-500">WhatsApp commerce for Sri Lankan businesses.</p>
-        </div>
-        <div className="flex flex-wrap gap-4 text-sm font-semibold text-slate-500">
-          <Link href="/resources" className="hover:text-slate-950">Resources</Link>
-          <Link href="/privacy-policy" className="hover:text-slate-950">Privacy Policy</Link>
-          <Link href="/terms-and-conditions" className="hover:text-slate-950">Terms</Link>
-          <Link href="/refund-policy" className="hover:text-slate-950">Refund Policy</Link>
-          <Link href="/cookie-policy" className="hover:text-slate-950">Cookie Policy</Link>
-        </div>
-      </div>
-    </footer>
   );
 }
