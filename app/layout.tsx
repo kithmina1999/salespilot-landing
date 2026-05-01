@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 
@@ -18,6 +19,16 @@ export const metadata: Metadata = {
   },
 };
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="h-full antialiased light"
+      className={`h-full antialiased light ${inter.variable} ${plusJakartaSans.variable}`}
     >
       <body className="min-h-full flex flex-col bg-white text-foreground">
         <SmoothScrollProvider>

@@ -31,11 +31,11 @@ export function SmoothScrollProvider({
     <ReactLenis
       root
       ref={lenisRef}
-      autoRaf={false}
       options={{
         lerp: 0.1,
         duration: 1.2,
         smoothWheel: true,
+        autoRaf: false
       }}
     >
       {children}
