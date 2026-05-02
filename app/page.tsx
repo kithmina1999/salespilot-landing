@@ -18,6 +18,8 @@ import { icons, landingContent, type Locale } from "@/lib/landing-content";
 import { resources } from "@/lib/resources";
 import { appUrl } from "@/lib/site";
 import { StickyFooter } from "@/components/sticky-footer";
+import { Hero } from "@/components/hero";
+import { FeaturesBento } from "@/components/features-bento";
 
 function SectionHeader({
   eyebrow,
@@ -39,69 +41,7 @@ function SectionHeader({
   );
 }
 
-function ProductMockup() {
-  return (
-    <div className="relative mx-auto w-full max-w-xl">
-      <div className="absolute -left-4 top-8 hidden h-28 w-28 rounded-full border border-emerald-200 bg-emerald-50 md:block" />
-      <div className="relative rounded-[2rem] border border-slate-200 bg-white p-3 shadow-2xl shadow-slate-200/80">
-        <div className="rounded-[1.45rem] border border-slate-200 bg-slate-950 p-4">
-          <div className="grid gap-3 md:grid-cols-[0.85fr_1.15fr]">
-            <div className="rounded-2xl bg-white p-3">
-              <div className="mb-3 flex items-center gap-2 border-b border-slate-100 pb-3">
-                <span className="h-8 w-8 rounded-full bg-emerald-500" />
-                <div>
-                  <p className="text-xs font-black text-slate-950">WhatsApp Shop</p>
-                  <p className="text-[10px] font-semibold text-emerald-600">online now</p>
-                </div>
-              </div>
-              <div className="space-y-2 text-xs">
-                <div className="max-w-[78%] rounded-2xl rounded-tl-sm bg-slate-100 p-2 text-slate-700">
-                  Price kohomada? Delivery Colombo?
-                </div>
-                <div className="ml-auto max-w-[88%] rounded-2xl rounded-tr-sm bg-emerald-500 p-2 font-semibold text-white">
-                  It is Rs. 2,450. Colombo delivery is 1-2 days. Want to order?
-                </div>
-                <div className="max-w-[82%] rounded-2xl rounded-tl-sm bg-slate-100 p-2 text-slate-700">
-                  Hari. Bank transfer karannam.
-                </div>
-              </div>
-            </div>
-            <div className="grid gap-3">
-              <div className="rounded-2xl border border-white/10 bg-white/8 p-4 text-white">
-                <div className="mb-4 flex items-center justify-between">
-                  <p className="text-xs font-bold text-slate-300">Order board</p>
-                  <span className="rounded-full bg-amber-400/15 px-2 py-1 text-[10px] font-bold text-amber-200">
-                    payment review
-                  </span>
-                </div>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  {["New", "Shipped", "Delivered"].map((label, index) => (
-                    <div key={label} className="rounded-xl bg-white/10 p-3">
-                      <p className="text-[10px] font-bold text-slate-400">{label}</p>
-                      <p className="mt-1 text-xl font-black">{index === 0 ? 8 : index === 1 ? 12 : 31}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl bg-white p-4">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Revenue</p>
-                  <p className="mt-2 text-2xl font-black text-slate-950">Rs. 418K</p>
-                  <p className="mt-1 text-xs font-semibold text-emerald-600">+18% this month</p>
-                </div>
-                <div className="rounded-2xl bg-blue-500 p-4 text-white">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-100">AI handled</p>
-                  <p className="mt-2 text-2xl font-black">76%</p>
-                  <p className="mt-1 text-xs font-semibold text-blue-100">owner can scan gaps</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+
 
 function WorkflowVisual() {
   const cards = [
@@ -143,57 +83,9 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       <Navbar locale={locale} labels={t.nav} onLocaleChange={setLocale} />
 
-      <section className="overflow-hidden border-b border-slate-200 bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_70%)]">
-        <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-black uppercase tracking-wider text-emerald-700">
-              <ShieldCheck className="h-4 w-4" />
-              {t.hero.badge}
-            </div>
-            <h1 className="mt-6 max-w-4xl text-5xl font-black tracking-tight text-slate-950 md:text-7xl">{t.hero.title}</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">{t.hero.description}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href={`${appUrl}/register`} className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-black text-white transition hover:bg-slate-800">
-                {t.hero.primary}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="#workflow" className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-black text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
-                {t.hero.secondary}
-              </Link>
-            </div>
-            <p className="mt-4 text-sm font-semibold text-slate-500">{t.hero.trust}</p>
-            <div className="mt-9 grid max-w-lg grid-cols-3 divide-x divide-slate-200 rounded-2xl border border-slate-200 bg-white shadow-sm">
-              {t.hero.stats.map(([value, label]) => (
-                <div key={label} className="p-4">
-                  <p className="text-2xl font-black text-slate-950">{value}</p>
-                  <p className="mt-1 text-xs font-semibold text-slate-500">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <ProductMockup />
-        </div>
-      </section>
+      <Hero t={t.hero} />
 
-      <section id="features" className="px-5 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeader {...t.features} />
-          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {t.features.items.map((feature) => {
-              const Icon = icons[feature.icon];
-              return (
-                <div key={feature.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-lg font-black text-slate-950">{feature.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{feature.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <FeaturesBento t={t.features} />
 
       <section id="workflow" className="border-y border-slate-200 bg-slate-50 px-5 py-20 md:py-28">
         <div className="mx-auto max-w-7xl">

@@ -20,7 +20,7 @@ export const legalPages: Record<
         heading: "About this policy",
         body: [
           `${companyName} operates SalesPilot, a WhatsApp commerce and sales automation platform. This Privacy Policy explains how we handle information when you visit our website, create an account, connect WhatsApp, upload products, manage orders, or contact support.`,
-          `Business details placeholder: ${companyAddress}. Support: ${supportEmail}, ${supportPhone}. Replace these placeholders with final company details before production launch.`,
+          `Business details placeholder: ${companyAddress}. Support: ${supportEmail}, ${supportPhone}.`,
         ],
       },
       {
@@ -35,6 +35,7 @@ export const legalPages: Record<
         body: [
           "We use information to provide the platform, verify WhatsApp credentials, process orders, support payment proof review, generate dashboards, improve reliability, prevent abuse, provide support, and comply with legal or payment-provider requirements.",
           "We may use aggregated, non-identifying usage data to understand product performance and improve SalesPilot.",
+          "When our AI assistant cannot answer a customer query from your FAQ rules, the message is processed by Google Gemini AI to generate a contextual response. Message content is sent to Google's API but is not used by Google for training. No customer personal data beyond the message text is shared with Google.",
         ],
       },
       {
@@ -59,7 +60,6 @@ export const legalPages: Record<
         heading: "Agreement",
         body: [
           `These Terms & Conditions apply to the use of SalesPilot by customers of ${companyName}. By creating an account, starting a trial, connecting WhatsApp, or using the dashboard, you agree to these terms.`,
-          "These terms are practical templates and should be reviewed with legal counsel before production publication.",
         ],
       },
       {
@@ -100,7 +100,7 @@ export const legalPages: Record<
       {
         heading: "Overview",
         body: [
-          "This Refund Policy applies to SalesPilot subscriptions and activation payments. Replace placeholders with the final refund window and company decision rules before production launch.",
+          "This Refund Policy applies to SalesPilot subscriptions and activation payments.",
           "Customer order refunds handled by merchants using SalesPilot are the responsibility of those merchants, not SalesPilot.",
         ],
       },
@@ -114,7 +114,7 @@ export const legalPages: Record<
       {
         heading: "Subscription refund window",
         body: [
-          "Placeholder policy: refund requests may be considered within [X days] of payment if the service has not been materially used or if activation could not be completed due to a SalesPilot-side issue.",
+          "Refund requests may be considered within 14 days of payment if the service has not been materially used or if activation could not be completed due to a SalesPilot-side issue.",
           "Annual plan refunds, partial month refunds, and promotional payments should be reviewed case by case unless a stricter final policy is published.",
         ],
       },

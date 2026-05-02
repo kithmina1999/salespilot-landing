@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Menu } from "lucide-react";
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { useState, useEffect, useRef } from "react";
 import { appUrl } from "@/lib/site";
 import type { Locale } from "@/lib/landing-content";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 interface NavbarProps {
   locale?: Locale;
@@ -26,7 +27,7 @@ const fallbackLabels = {
   pricing: "Pricing",
   resources: "Resources",
   faq: "FAQ",
-  login: "Login",
+  login: "Log in",
   cta: "Start free trial",
 };
 
@@ -38,102 +39,177 @@ const navLinks = [
   ["/#faq", "faq"],
 ] as const;
 
-function LanguageToggle({
-  locale,
-  onLocaleChange,
-}: {
-  locale: Locale;
-  onLocaleChange?: (locale: Locale) => void;
-}) {
-  if (!onLocaleChange) return null;
+export default function Navbar({ locale = "en", labels = fallbackLabels, onLocaleChange }: NavbarProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const menuRef = useRef<HTMLDivElement>(null);
+  const linksRef = useRef<HTMLDivElement>(null);
+
+  // Scroll Detection for Pill Morphing
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // initial check
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // GSAP Mobile Menu Animation (Top-Down Slide)
+  useGSAP(() => {
+    if (!menuRef.current) return;
+    
+    if (mobileMenuOpen) {
+      // Open Menu
+      gsap.to(menuRef.current, {
+        yPercent: 100,
+        duration: 0.7,
+        ease: "power4.out",
+      });
+      // Stagger links in
+      gsap.fromTo(
+        ".mobile-link",
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: "back.out(1.7)", delay: 0.2 }
+      );
+    } else {
+      // Close Menu
+      gsap.to(menuRef.current, {
+        yPercent: 0,
+        duration: 0.6,
+        ease: "power4.inOut",
+      });
+    }
+  }, [mobileMenuOpen]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   return (
-    <div className="flex rounded-full border border-slate-200 bg-white p-1 text-xs font-bold text-slate-500 shadow-sm">
-      {(["en", "si"] as const).map((item) => (
-        <button
-          key={item}
-          type="button"
-          onClick={() => onLocaleChange(item)}
-          className={`rounded-full px-3 py-1.5 transition ${
-            locale === item ? "bg-slate-950 text-white" : "hover:text-slate-900"
+    <>
+      {/* Desktop & Mobile Header wrapper */}
+      <header 
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isScrolled ? "pt-4 px-4" : "pt-0 px-0"
+        }`}
+      >
+        <nav 
+          className={`mx-auto flex items-center justify-between transition-all duration-500 ${
+            isScrolled 
+              ? "h-14 max-w-4xl rounded-full border border-slate-200/50 bg-white/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-6" 
+              : "h-20 max-w-7xl px-5 lg:px-8 bg-transparent"
           }`}
         >
-          {item.toUpperCase()}
-        </button>
-      ))}
-    </div>
-  );
-}
+          {/* Logo */}
+          <Link 
+            href="/" 
+            className="flex items-center gap-2 group relative z-50" 
+            aria-label="SalesPilot home"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <span className={`flex h-8 w-8 items-center justify-center rounded-lg bg-slate-950 text-xs font-black text-white transition-transform group-hover:scale-105`}>
+              SP
+            </span>
+            <span className={`font-black tracking-tight transition-colors ${
+              mobileMenuOpen ? "text-white" : "text-slate-950"
+            } ${isScrolled ? "text-base" : "text-lg"}`}>
+              SalesPilot
+            </span>
+          </Link>
 
-export default function Navbar({ locale = "en", labels = fallbackLabels, onLocaleChange }: NavbarProps) {
-  return (
-    <nav className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
-        <Link href="/" className="flex items-center gap-2" aria-label="SalesPilot home">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-sm font-black text-white">
-            SP
-          </span>
-          <span className="text-lg font-black tracking-tight text-slate-950">SalesPilot</span>
-        </Link>
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map(([href, key]) => (
+              <Link 
+                key={key} 
+                href={href} 
+                className="text-[13px] font-bold text-slate-600 transition-colors hover:text-emerald-600 relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-500 after:transition-all hover:after:w-full"
+              >
+                {labels[key]}
+              </Link>
+            ))}
+          </div>
 
-        <div className="hidden items-center gap-7 lg:flex">
+          {/* Desktop CTAs */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Link 
+              href={`${appUrl}/login`} 
+              className="text-[13px] font-bold text-slate-600 transition-colors hover:text-slate-950"
+            >
+              {labels.login}
+            </Link>
+            <Link
+              href={`${appUrl}/register`}
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-emerald-500 px-5 py-2 font-bold text-white shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-transform hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]"
+            >
+              <span className="relative z-10 text-[13px] tracking-wide">{labels.cta}</span>
+              <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 transition-opacity group-hover:opacity-100" />
+            </Link>
+          </div>
+
+          {/* Mobile Menu Toggle (Hamburger to X) */}
+          <button 
+            className="lg:hidden relative z-50 p-2 -mr-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle Menu"
+          >
+            <div className="w-6 h-5 flex flex-col justify-between relative">
+              <span className={`block w-full h-0.5 rounded-full transition-all duration-300 ${mobileMenuOpen ? "bg-white rotate-45 translate-y-[9px]" : "bg-slate-950"}`} />
+              <span className={`block w-full h-0.5 rounded-full transition-all duration-300 ${mobileMenuOpen ? "bg-white opacity-0" : "bg-slate-950"}`} />
+              <span className={`block w-full h-0.5 rounded-full transition-all duration-300 ${mobileMenuOpen ? "bg-white -rotate-45 -translate-y-[9px]" : "bg-slate-950"}`} />
+            </div>
+          </button>
+        </nav>
+      </header>
+
+      {/* Full Screen Mobile Menu Overlay */}
+      <div 
+        ref={menuRef}
+        className="fixed top-[-100vh] left-0 w-full h-[100vh] bg-slate-950 z-30 flex flex-col items-center justify-center overflow-hidden"
+      >
+        {/* Subtle glowing orb in the background of the black menu */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/30 via-slate-950 to-slate-950 pointer-events-none" />
+        
+        <div ref={linksRef} className="flex flex-col items-center gap-8 z-10 relative w-full px-5">
           {navLinks.map(([href, key]) => (
-            <Link key={key} href={href} className="text-sm font-semibold text-slate-600 transition hover:text-slate-950">
+            <Link 
+              key={key} 
+              href={href} 
+              onClick={() => setMobileMenuOpen(false)}
+              className="mobile-link text-3xl font-black tracking-tight text-slate-300 hover:text-emerald-400 transition-colors"
+            >
               {labels[key]}
             </Link>
           ))}
-        </div>
-
-        <div className="hidden items-center gap-3 lg:flex">
-          <LanguageToggle locale={locale} onLocaleChange={onLocaleChange} />
-          <Link href={`${appUrl}/login`} className="text-sm font-bold text-slate-600 transition hover:text-slate-950">
+          
+          <div className="w-12 h-px bg-slate-800 my-4 mobile-link" />
+          
+          <Link 
+            href={`${appUrl}/login`}
+            onClick={() => setMobileMenuOpen(false)}
+            className="mobile-link text-lg font-bold text-slate-400 hover:text-white transition-colors"
+          >
             {labels.login}
           </Link>
           <Link
             href={`${appUrl}/register`}
-            className="rounded-full bg-slate-950 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-slate-800"
+            onClick={() => setMobileMenuOpen(false)}
+            className="mobile-link mt-4 flex w-full max-w-[280px] items-center justify-center rounded-full bg-emerald-500 px-8 py-4 text-base font-black text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-transform hover:scale-105"
           >
             {labels.cta}
           </Link>
         </div>
-
-        <div className="lg:hidden">
-          <Sheet>
-            <SheetTrigger aria-label="Open navigation" className="rounded-lg border border-slate-200 p-2 text-slate-700">
-              <Menu className="h-5 w-5" />
-            </SheetTrigger>
-            <SheetContent className="bg-white">
-              <SheetHeader>
-                <SheetTitle className="text-left text-xl font-black">SalesPilot</SheetTitle>
-              </SheetHeader>
-              <div className="flex flex-1 flex-col gap-2 px-4">
-                {navLinks.map(([href, key]) => (
-                  <SheetClose asChild key={key}>
-                    <Link href={href} className="rounded-lg px-3 py-3 text-lg font-semibold text-slate-700 hover:bg-slate-100">
-                      {labels[key]}
-                    </Link>
-                  </SheetClose>
-                ))}
-                <div className="mt-4">
-                  <LanguageToggle locale={locale} onLocaleChange={onLocaleChange} />
-                </div>
-                <div className="mt-6 grid gap-3">
-                  <SheetClose asChild>
-                    <Link href={`${appUrl}/login`} className="rounded-lg border border-slate-200 px-4 py-3 text-center font-bold">
-                      {labels.login}
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link href={`${appUrl}/register`} className="rounded-lg bg-slate-950 px-4 py-3 text-center font-bold text-white">
-                      {labels.cta}
-                    </Link>
-                  </SheetClose>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
       </div>
-    </nav>
+    </>
   );
 }
