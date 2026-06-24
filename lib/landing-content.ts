@@ -41,7 +41,7 @@ export const icons = {
   sparkles: Sparkles,
 } satisfies Record<IconName, ComponentType<{ className?: string }>>;
 
-type LandingContent = {
+export type LandingContent = {
   nav: Record<"features" | "workflow" | "pricing" | "resources" | "faq" | "login" | "cta", string>;
   hero: {
     badge: string;

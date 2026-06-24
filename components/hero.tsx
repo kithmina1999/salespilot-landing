@@ -7,12 +7,15 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 import { appUrl } from "@/lib/site";
+import type { LandingContent } from "@/lib/landing-content";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export function Hero({ t }: { t: any }) {
+type HeroContent = LandingContent["hero"];
+
+export function Hero({ t }: { t: HeroContent }) {
   const containerRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
@@ -39,7 +42,7 @@ export function Hero({ t }: { t: any }) {
       
       // Calculate how far to scroll the carousel horizontally
       const getScrollAmount = () => {
-        let carouselWidth = carousel.scrollWidth;
+        const carouselWidth = carousel.scrollWidth;
         // Scroll exactly enough so the last item aligns with the right edge
         return -(carouselWidth - window.innerWidth);
       };

@@ -1,0 +1,52 @@
+# syntax=docker/dockerfile:1.7
+
+FROM node:24-alpine AS base
+
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN apk add --no-cache libc6-compat
+
+FROM base AS deps
+
+COPY package*.json ./
+RUN npm ci
+
+FROM base AS builder
+
+ARG NEXT_APPLICATION_URL=https://app.salespilot.lk
+ARG NEXT_PUBLIC_APP_URL=https://app.salespilot.lk
+ARG NEXT_PUBLIC_COMPANY_ADDRESS=SriLanka
+ARG NEXT_PUBLIC_COMPANY_NAME=SalesPilot
+ARG NEXT_PUBLIC_SITE_URL=https://salespilot.lk
+ARG NEXT_PUBLIC_SUPPORT_EMAIL=support@salespilot.lk
+ARG NEXT_PUBLIC_SUPPORT_PHONE_NUMBER=+94771234567
+ENV NEXT_APPLICATION_URL=$NEXT_APPLICATION_URL \
+    NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL \
+    NEXT_PUBLIC_COMPANY_ADDRESS="$NEXT_PUBLIC_COMPANY_ADDRESS" \
+    NEXT_PUBLIC_COMPANY_NAME=$NEXT_PUBLIC_COMPANY_NAME \
+    NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
+    NEXT_PUBLIC_SUPPORT_EMAIL=$NEXT_PUBLIC_SUPPORT_EMAIL \
+    NEXT_PUBLIC_SUPPORT_PHONE_NUMBER="$NEXT_PUBLIC_SUPPORT_PHONE_NUMBER" \
+    NODE_ENV=production
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM base AS runner
+
+ENV NODE_ENV=production \
+    HOSTNAME=0.0.0.0 \
+    PORT=3002
+
+RUN addgroup -S nodejs \
+    && adduser -S nextjs -G nodejs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+EXPOSE 3002
+
+CMD ["node", "server.js"]

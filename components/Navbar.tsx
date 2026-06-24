@@ -39,7 +39,7 @@ const navLinks = [
   ["/#faq", "faq"],
 ] as const;
 
-export default function Navbar({ locale = "en", labels = fallbackLabels, onLocaleChange }: NavbarProps) {
+export default function Navbar({ labels = fallbackLabels }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   

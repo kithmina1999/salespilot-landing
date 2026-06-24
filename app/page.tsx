@@ -11,7 +11,6 @@ import {
   PackageCheck,
   ReceiptText,
   Send,
-  ShieldCheck,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { icons, landingContent, type Locale } from "@/lib/landing-content";

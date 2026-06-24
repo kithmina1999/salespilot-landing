@@ -2,8 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { icons } from "@/lib/landing-content";
+import type { LandingContent } from "@/lib/landing-content";
 
-export function FeaturesBento({ t }: { t: any }) {
+type FeaturesContent = LandingContent["features"];
+
+export function FeaturesBento({ t }: { t: FeaturesContent }) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,8 +67,8 @@ export function FeaturesBento({ t }: { t: any }) {
         </div>
 
         <div ref={gridRef} className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 grid-flow-dense">
-          {t.items.map((feature: any, index: number) => {
-            const Icon = icons[feature.icon as keyof typeof icons];
+          {t.items.map((feature, index) => {
+            const Icon = icons[feature.icon];
             const isLarge = index === 0 || index === 4;
 
             return (
