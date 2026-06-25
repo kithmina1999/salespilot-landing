@@ -143,13 +143,13 @@ export default function Navbar({ labels = fallbackLabels }: NavbarProps) {
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-4">
             <Link 
-              href={`${appUrl}/login`} 
+              href={`${appUrl}/auth/login`} 
               className="text-[13px] font-bold text-slate-600 transition-colors hover:text-slate-950"
             >
               {labels.login}
             </Link>
             <Link
-              href={`${appUrl}/register`}
+              href={`${appUrl}/auth/register`}
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-emerald-500 px-5 py-2 font-bold text-white shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-transform hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]"
             >
               <span className="relative z-10 text-[13px] tracking-wide">{labels.cta}</span>
@@ -195,14 +195,14 @@ export default function Navbar({ labels = fallbackLabels }: NavbarProps) {
           <div className="w-12 h-px bg-slate-800 my-4 mobile-link" />
           
           <Link 
-            href={`${appUrl}/login`}
+            href={`${appUrl}/auth/login`}
             onClick={() => setMobileMenuOpen(false)}
             className="mobile-link text-lg font-bold text-slate-400 hover:text-white transition-colors"
           >
             {labels.login}
           </Link>
           <Link
-            href={`${appUrl}/register`}
+            href={`${appUrl}/auth/register`}
             onClick={() => setMobileMenuOpen(false)}
             className="mobile-link mt-4 flex w-full max-w-[280px] items-center justify-center rounded-full bg-emerald-500 px-8 py-4 text-base font-black text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-transform hover:scale-105"
           >

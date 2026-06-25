@@ -83,7 +83,7 @@ export function Hero({ t }: { t: HeroContent }) {
           </p>
           
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <Link href={`${appUrl}/register`} className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-sm font-black text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-emerald-600/30 hover:-translate-y-0.5">
+            <Link href={`${appUrl}/auth/register`} className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-sm font-black text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-emerald-600/30 hover:-translate-y-0.5">
               {t.primary}
               <ArrowRight className="h-4 w-4" />
             </Link>
