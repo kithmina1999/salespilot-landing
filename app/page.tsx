@@ -15,7 +15,7 @@ import {
 import Navbar from "@/components/Navbar";
 import { icons, landingContent, type Locale } from "@/lib/landing-content";
 import { resources } from "@/lib/resources";
-import { appUrl } from "@/lib/site";
+import { appRegisterUrl } from "@/lib/site";
 import { StickyFooter } from "@/components/sticky-footer";
 import { Hero } from "@/components/hero";
 import { FeaturesBento } from "@/components/features-bento";
@@ -150,7 +150,7 @@ export default function Home() {
                   ))}
                 </ul>
                 <Link
-                  href={`${appUrl}/auth/register`}
+                  href={appRegisterUrl}
                   className={`mt-7 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-black ${
                     plan.highlighted ? "bg-white text-slate-950 hover:bg-slate-100" : "bg-slate-950 text-white hover:bg-slate-800"
                   }`}
@@ -214,7 +214,7 @@ export default function Home() {
           <Send className="mx-auto h-10 w-10 text-emerald-300" />
           <h2 className="mx-auto mt-5 max-w-3xl text-3xl font-black tracking-tight md:text-5xl">{t.finalCta.title}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-300">{t.finalCta.description}</p>
-          <Link href={`${appUrl}/auth/register`} className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-slate-950">
+          <Link href={appRegisterUrl} className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-slate-950">
             {t.finalCta.cta}
             <ArrowRight className="h-4 w-4" />
           </Link>
